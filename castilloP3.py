@@ -10,17 +10,23 @@ from helper_graphics import *
 from os.path import join
 
 
-def revertImages():
-    """ redisplays images in their original state
+def revertImages(w, h, name):
+    """ reassigns an image to its original form
     args:
-        dirname(directory): Where images are stored.
-        win(GraphWin): Window where images are drawn.
-        image(img): Menu image.
+        w(int): width of the image
+        h(int): height of the image
+        name: fullname or the path to the file holding original image
+    return:
+        img(Image): The first image from the original file
 
     """
-    print("hello there")
-    # show images from the original file
-    # wait for click
+    # Create an Image object using fullname. Store it in variable img
+    img = Image(Point(0, 0), name)
+
+    # Set anchor of image to its center point
+    img.setAnchor(Point(w // 2, h // 2))
+    return img
+
 
 def averageImages(dirname, win, img):
     """ Computes and saves average pixel color into image.
@@ -242,8 +248,10 @@ def main():
                 button = draw_menu(win, w, h)
 
             elif button_index == 4:
-                revertImages()
-                button = draw_menu(win, w , h)
+                img = revertImages(w, h, fullname)  # revert img
+                img.draw(win)                       # draw the reverted image
+                color = True                        # reset the color to true so cycleThrough displays color images
+                button = draw_menu(win, w, h)
             button_index = wait_for_menu(win, button)
 
         if button_index == 3:
