@@ -10,6 +10,18 @@ from helper_graphics import *
 from os.path import join
 
 
+def revertImages():
+    """ redisplays images in their original state
+    args:
+        dirname(directory): Where images are stored.
+        win(GraphWin): Window where images are drawn.
+        image(img): Menu image.
+
+    """
+    print("hello there")
+    # show images from the original file
+    # wait for click
+
 def averageImages(dirname, win, img):
     """ Computes and saves average pixel color into image.
     args:
@@ -124,7 +136,7 @@ def draw_menu(win, w, h):
         list: a list L, where L[i] is the i-th button (Rectangle object).
 
     """
-    menu_titles = ["a. Cycle Through Images", "b. Convert to GrayScale", "c. Average the images", "d. Quit"]
+    menu_titles = ["a. Cycle Through Images", "b. Convert to GrayScale", "c. Average the images", "d. Quit", "e. Revert Images"]
     list_button = []
     for i in range(len(menu_titles)):
         button = draw_button(win, Point(w / 2, h / 2 + i * (h / (len(menu_titles)*2))), menu_titles[i])
@@ -159,6 +171,9 @@ def wait_for_menu(win, buttons):
     button_ul_3 = buttons[3].getP1()
     button_lr_3 = buttons[3].getP2()
 
+    button_ul_4 = buttons[4].getP1()
+    button_lr_4 = buttons[4].getP2()
+
     mousept = win.getMouse()
     if button_ul.getX() < mousept.getX() < button_lr.getX() and \
             button_ul.getY() < mousept.getY() < button_lr.getY():
@@ -175,6 +190,9 @@ def wait_for_menu(win, buttons):
     elif button_ul_3.getX() < mousept.getX() < button_lr_3.getX() and \
             button_ul_3.getY() < mousept.getY() < button_lr_3.getY():
         return 3
+    elif button_ul_4.getX() < mousept.getX() < button_lr_4.getX() and \
+            button_ul_4.getY() < mousept.getY() < button_lr_4.getY():
+        return 4
     else:
         return None
 
@@ -222,6 +240,10 @@ def main():
                 win = GraphWin("Click to continue...", w, h)
                 img.draw(win)
                 button = draw_menu(win, w, h)
+
+            elif button_index == 4:
+                revertImages()
+                button = draw_menu(win, w , h)
             button_index = wait_for_menu(win, button)
 
         if button_index == 3:
