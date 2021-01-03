@@ -20,6 +20,7 @@ def averageImages(dirname, win, img):
     """
     file_list = os.listdir(dirname)
     img_list = []
+
     for i in range(len(file_list)):
         fullname = join(dirname, file_list[i])
         pic = Image(Point(0, 0), fullname)
@@ -27,17 +28,20 @@ def averageImages(dirname, win, img):
         h = pic.getHeight()
         pic.setAnchor(Point(w // 2, h // 2))
         img_list.append(pic)
+
     for x in range(img.getWidth()):
         for y in range(img.getHeight()):
             r = 0
             g = 0
             b = 0
+
             for j in range(len(img_list)):  # for loop runs through each image in dirname
                 rgb = img_list[j].getPixel(x, y)
                 r = rgb[0] + r
                 g = rgb[1] + g
                 b = rgb[2] + b
             img.setPixel(x, y, color_rgb(int(r//len(img_list)), int(g//len(img_list)), int(b//len(img_list))))
+
     img.undraw()  # removes menu image
     img.draw(win)  # image drawn without menu
     win.getMouse()
@@ -56,6 +60,7 @@ def grayImage(img):
             rgb = img.getPixel(x, y)
             avg = convertToGray(rgb)
             img.setPixel(x, y, color_rgb(int(avg), int(avg), int(avg)))
+
     return img
 
 
@@ -70,6 +75,7 @@ def cycleThrough(win, dirname, file_list, color):
         None
     """
     if color is True:
+
         for i in range(0, 10):
             inputImageFilename = file_list[i]
             fullname = join(dirname, inputImageFilename)
@@ -85,6 +91,7 @@ def cycleThrough(win, dirname, file_list, color):
             img.draw(win)
 
             win.getMouse()
+
     elif color is False:
         for i in range(0, 10):
             inputImageFilename = file_list[i]
@@ -105,7 +112,8 @@ def cycleThrough(win, dirname, file_list, color):
 
 
 def draw_menu(win, w, h):
-    """Creates and draws a menu of buttons.
+    """Creates and draws a menu of buttons. Buttons are hard coded to Cycle Through Images, Convert to GrayScale,
+    Average the images, and Quit.
 
     Args:
         win (GraphWin): The window where buttons will be drawn.
@@ -119,8 +127,12 @@ def draw_menu(win, w, h):
     menu_titles = ["a. Cycle Through Images", "b. Convert to GrayScale", "c. Average the images", "d. Quit"]
     list_button = []
     for i in range(len(menu_titles)):
-        button = draw_button(win, Point(w / 2, h / 2 + i * (h / 8)), menu_titles[i])
+        button = draw_button(win, Point(w / 2, h / 2 + i * (h / (len(menu_titles)*2))), menu_titles[i])
+        # height calculations represent the spacing in between buttons
+        # spacing is measured by the amount of elements in the list menu_titles
+
         list_button.append(button)
+
     return list_button
 
 
@@ -196,6 +208,7 @@ def main():
         button = draw_menu(win, w, h)
         button_index = wait_for_menu(win, button)
         color = True
+
         while button_index != 3:
             if button_index == 1:
                 grayImage(img)
